@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Talkie-walkie-Kotlin</string>
+    <string name="bonjour_le_monde">Bonjour le monde !</string>
 </resources>
