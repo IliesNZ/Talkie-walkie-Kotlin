@@ -1,14 +1,15 @@
 package com.iliesnz.talkie_walkie_kotlin.viewmodel
 
-import com.iliesnz.talkie_walkie_kotlin.service.interfaces.HomeService
+import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IHomeService
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class HomeViewmodel(private val service: HomeService) {
+class HomeViewmodel(private val service: IHomeService) {
 
-    fun domainVerification(ipAddress: String) {
+    fun domainVerificationManager(ipAddress: String) {
         try {
-            service.domainVerificationManager(ipAddress)
+            return service.verifyDomain(ipAddress)
+            TODO("Mettre des state.value à la place dans les catch")
         } catch (e: ConnectException) {
             e.printStackTrace()
         } catch (e: SocketTimeoutException){
@@ -17,5 +18,4 @@ class HomeViewmodel(private val service: HomeService) {
             e.printStackTrace()
         }
     }
-
 }
