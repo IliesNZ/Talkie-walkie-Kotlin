@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
 
-class home : AppCompatActivity() {
+class HomeView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class home : AppCompatActivity() {
         val IP = findViewById<EditText>(R.id.IP)
         val chargement = findViewById<ProgressBar>(R.id.chargement)
 
-        val talkieIntent = Intent(this, talkie::class.java)
+        val talkieViewIntent = Intent(this, talkieView::class.java)
 
         confirmation.setOnClickListener {
             if (IP.text.toString().isEmpty()){
@@ -41,7 +41,9 @@ class home : AppCompatActivity() {
                 confirmation.visibility = View.GONE
                 chargement.visibility = View.VISIBLE
 
-                startActivity(talkieIntent)
+
+
+                startActivity(talkieViewIntent)
             }
         }
     }

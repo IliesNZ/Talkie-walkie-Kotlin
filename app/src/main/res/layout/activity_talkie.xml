@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFEB3B"
-    tools:context=".view.talkie">
+    tools:context=".view.talkieView">
 
     <Button
         android:id="@+id/button_talk"

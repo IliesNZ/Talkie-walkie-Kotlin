@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TalkiewalkieKotlin">
         <activity
-            android:name=".view.home"
+            android:name=".view.HomeView"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.talkie"
+            android:name=".view.talkieView"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
