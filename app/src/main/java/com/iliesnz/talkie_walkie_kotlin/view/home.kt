@@ -13,12 +13,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
 
-class MainActivity : AppCompatActivity() {
+class home : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val IP = findViewById<EditText>(R.id.IP)
         val chargement = findViewById<ProgressBar>(R.id.chargement)
 
-        val talkieIntent = Intent(this, Talkie::class.java)
+        val talkieIntent = Intent(this, talkie::class.java)
 
         confirmation.setOnClickListener {
             if (IP.text.toString().isEmpty()){

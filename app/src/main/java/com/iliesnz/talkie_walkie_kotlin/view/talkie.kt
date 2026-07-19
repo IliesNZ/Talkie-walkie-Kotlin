@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
 
-class Talkie : AppCompatActivity() {
+class talkie : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class Talkie : AppCompatActivity() {
         val back = findViewById<Button>(R.id.button_back)
         val talk = findViewById<Button>(R.id.button_talk)
 
-        val homeIntent = Intent(this, MainActivity::class.java)
+        val homeIntent = Intent(this, home::class.java)
 
         back.setOnClickListener {
             startActivity(homeIntent)
