@@ -4,7 +4,7 @@ import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.IHomeRepository
 
 class HomeRepository : IHomeRepository{
 
-    override fun verifyDomain(ipAddress: String) {
+    override fun connectToServer(ipAddress: String) {
         TODO("Connexion au serveur")
     }
 

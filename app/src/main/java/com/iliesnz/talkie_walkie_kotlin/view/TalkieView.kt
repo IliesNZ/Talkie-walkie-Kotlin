@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Button
+import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
 
-class talkieView : AppCompatActivity() {
+class TalkieView : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,9 @@ class talkieView : AppCompatActivity() {
 
         val back = findViewById<Button>(R.id.button_back)
         val talk = findViewById<Button>(R.id.button_talk)
+        val numberPicker = findViewById<NumberPicker>(R.id.number_picker)
+        numberPicker.minValue = 1
+        numberPicker.maxValue = 15
 
         val homeViewIntent = Intent(this, HomeView::class.java)
 

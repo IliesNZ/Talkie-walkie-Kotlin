@@ -6,9 +6,9 @@ import java.net.SocketTimeoutException
 
 class HomeViewmodel(private val service: IHomeService) {
 
-    fun domainVerificationManager(ipAddress: String) {
+    fun connectToServer(ipAddress: String) {
         try {
-            return service.verifyDomain(ipAddress)
+            service.connectToServer(ipAddress)
             TODO("Mettre des state.value à la place dans les catch")
         } catch (e: ConnectException) {
             e.printStackTrace()

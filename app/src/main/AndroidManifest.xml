@@ -13,7 +13,8 @@
         android:theme="@style/Theme.TalkiewalkieKotlin">
         <activity
             android:name=".view.HomeView"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,8 +22,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.talkieView"
+            android:name=".view.TalkieView"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
     </application>
 

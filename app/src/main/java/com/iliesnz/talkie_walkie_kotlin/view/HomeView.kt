@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
+import com.iliesnz.talkie_walkie_kotlin.container.AppContainer
 
 class HomeView : AppCompatActivity() {
 
@@ -25,26 +26,30 @@ class HomeView : AppCompatActivity() {
             insets
         }
 
+        val homeViewmodel = AppContainer.homeViewModel
+
         val confirmation = findViewById<Button>(R.id.button)
-        val IP = findViewById<EditText>(R.id.IP)
+        val ipAddress = findViewById<EditText>(R.id.IP)
         val chargement = findViewById<ProgressBar>(R.id.chargement)
 
-        val talkieViewIntent = Intent(this, talkieView::class.java)
+        val talkieViewIntent = Intent(this, TalkieView::class.java)
 
         confirmation.setOnClickListener {
-            if (IP.text.toString().isEmpty()){
+            if (ipAddress.text.toString().isEmpty()){
                 Toast.makeText(this, "Il manque l'ip du serveur !", Toast.LENGTH_LONG).show()
             }
             else{
                 Toast.makeText(this, "Tentative de connexion...", Toast.LENGTH_LONG).show()
-                IP.visibility = View.GONE
+                ipAddress.visibility = View.GONE
                 confirmation.visibility = View.GONE
                 chargement.visibility = View.VISIBLE
 
-
+                //homeViewmodel.connectToServer(ipAddress.text.toString())
 
                 startActivity(talkieViewIntent)
             }
         }
+
+
     }
 }

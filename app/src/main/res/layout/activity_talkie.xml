@@ -6,25 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFEB3B"
-    tools:context=".view.talkieView">
-
-    <Button
-        android:id="@+id/button_talk"
-        android:layout_width="140dp"
-        android:layout_height="138dp"
-        android:text="Push-To-Talk"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".view.TalkieView">
 
     <Button
         android:id="@+id/button_back"
-        android:layout_width="133dp"
-        android:layout_height="59dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Go back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_talk"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Push-To-Talk"
+        app:layout_constraintBottom_toTopOf="@+id/number_picker"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_back"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <NumberPicker
+        android:id="@+id/number_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_talk" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
