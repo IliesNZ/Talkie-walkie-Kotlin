@@ -44,9 +44,7 @@ class HomeView : AppCompatActivity() {
                 confirmation.visibility = View.GONE
                 chargement.visibility = View.VISIBLE
 
-                //homeViewmodel.connectToServer(ipAddress.text.toString())
-
-                startActivity(talkieViewIntent)
+                homeViewmodel.connectToServer(ipAddress.text.toString())
             }
         }
 
