@@ -2,7 +2,6 @@ package com.iliesnz.talkie_walkie_kotlin.network
 
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
@@ -16,8 +15,8 @@ class TcpClient: ITcpClient {
     private var dataIn: BufferedReader? = null
     private var dataOut: PrintWriter? = null
 
-    override fun ConnectToServer(IpAddress: String){
-        socket = Socket(IpAddress, port)
+    override fun ConnectToServer(ipAddress: String){
+        socket = Socket(ipAddress, port)
 
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
         dataOut = PrintWriter(socket?.getOutputStream(), true)
@@ -37,7 +36,7 @@ class TcpClient: ITcpClient {
     }
 
     override fun Listen() {
-        while (true) {
+        while (socket?.isClosed == false) {
             val message = dataIn?.readLine()
 
             // TODO: Faire sortitr quelque part

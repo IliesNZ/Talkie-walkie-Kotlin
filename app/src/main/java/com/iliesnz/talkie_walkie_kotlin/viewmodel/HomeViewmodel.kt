@@ -9,7 +9,7 @@ class HomeViewmodel(private val service: IHomeService) {
     fun connectToServer(ipAddress: String) {
         try {
             service.connectToServer(ipAddress)
-            TODO("Mettre des state.value à la place dans les catch")
+            //Mettre des state.value à la place dans les catch
         } catch (e: ConnectException) {
             e.printStackTrace()
         } catch (e: SocketTimeoutException){
