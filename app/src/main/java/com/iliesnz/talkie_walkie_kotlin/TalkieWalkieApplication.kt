@@ -14,6 +14,6 @@ class TalkieWalkieApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val container = AppContainer(applicationScope)
+        container = AppContainer(applicationScope)
     }
 }
