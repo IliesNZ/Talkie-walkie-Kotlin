@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iliesnz.talkie_walkie_kotlin.R
-import com.iliesnz.talkie_walkie_kotlin.container.AppContainer
+import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 
 class HomeView : AppCompatActivity() {
 
@@ -26,7 +26,8 @@ class HomeView : AppCompatActivity() {
             insets
         }
 
-        val homeViewmodel = AppContainer.homeViewModel
+        val app = application as TalkieWalkieApplication
+        val homeViewmodel = app.container.homeViewModel
 
         val confirmation = findViewById<Button>(R.id.button)
         val ipAddress = findViewById<EditText>(R.id.IP)
@@ -47,7 +48,5 @@ class HomeView : AppCompatActivity() {
                 homeViewmodel.connectToServer(ipAddress.text.toString())
             }
         }
-
-
     }
 }
