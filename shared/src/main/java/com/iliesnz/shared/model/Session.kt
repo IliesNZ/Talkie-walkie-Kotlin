@@ -1,6 +1,4 @@
-package com.iliesnz.talkie_walkie_kotlin.shared.model
-
-import kotlinx.coroutines.channels.Channel
+package com.iliesnz.shared.model
 
 class Session {
 

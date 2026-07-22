@@ -1,6 +1,6 @@
-package com.iliesnz.talkie_walkie_kotlin.shared.model
+package com.iliesnz.shared.model
 
-import com.iliesnz.talkie_walkie_kotlin.shared.protocol.Request
+import com.iliesnz.shared.protocol.Request
 import java.io.Serializable
 
 data class Packet(val type: Request, val data: String) : Serializable {

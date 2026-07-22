@@ -1,13 +1,13 @@
 package com.iliesnz.talkie_walkie_kotlin.network.interfaces
 
-import com.iliesnz.talkie_walkie_kotlin.shared.model.Packet
-import java.util.Objects
+import com.iliesnz.shared.model.Packet
+
 interface ITcpClient {
-    fun connectToServer(ipAddress: String)
+    suspend fun connectToServer(ipAddress: String)
 
     fun disconnectToServer()
 
-    fun sendMessage(message: Packet)
+    suspend fun sendMessage(message: Packet)
 
     suspend fun listen()
 

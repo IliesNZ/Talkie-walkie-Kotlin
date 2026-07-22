@@ -1,8 +1,8 @@
 package com.iliesnz.talkie_walkie_kotlin.network
 
+import com.iliesnz.shared.model.Packet
 import com.google.gson.Gson
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
-import com.iliesnz.talkie_walkie_kotlin.shared.model.Packet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
@@ -20,7 +20,7 @@ class TcpClient: ITcpClient {
     private var dataIn: BufferedReader? = null
     private var dataOut: PrintWriter? = null
 
-    override fun connectToServer(ipAddress: String){
+    override suspend fun connectToServer(ipAddress: String) = withContext(Dispatchers.IO) {
         socket = Socket(ipAddress, port)
 
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
@@ -36,11 +36,11 @@ class TcpClient: ITcpClient {
         socket = null
     }
 
-    override fun sendMessage(message: Packet){
+    override suspend fun sendMessage(message: Packet){
         dataOut?.println(toJson(message))
     }
 
-    suspend override fun listen() = withContext(Dispatchers.IO) {
+    override suspend fun listen() = withContext(Dispatchers.IO) {
 
         val s = socket
         while (s != null && s.isConnected && !s.isClosed) {

@@ -22,5 +22,10 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Talkie-walkie-Kotlin"
+rootProject.name = "Talkie-Walkie-Kotlin"
+
 include(":app")
+include(":shared")
+include(":server")
+include(":shared")
+include(":server")

@@ -1,4 +1,4 @@
-package com.iliesnz.talkie_walkie_kotlin.shared.protocol
+package com.iliesnz.shared.protocol
 
 enum class Request {
     CREATE_SESSION,     //TCP
