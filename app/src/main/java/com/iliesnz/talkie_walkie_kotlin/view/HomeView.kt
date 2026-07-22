@@ -79,7 +79,6 @@ class HomeView : AppCompatActivity() {
                 ipAddress.visibility = View.GONE
                 confirmation.visibility = View.GONE
                 chargement.visibility = View.VISIBLE
-                Toast.makeText(this, "Tentative de connexion...", Toast.LENGTH_LONG).show()
             }
 
             is HomeUiState.Error -> {

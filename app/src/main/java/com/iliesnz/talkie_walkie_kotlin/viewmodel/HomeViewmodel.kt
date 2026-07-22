@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class HomeViewmodel(private val service: IHomeService, private val applicationScope: CoroutineScope): ViewModel() {
+class HomeViewmodel(private val service: IHomeService): ViewModel() {
 
     private var uiState = MutableStateFlow<HomeUiState>(HomeUiState.Base)
     var uiStateReadOnly: StateFlow<HomeUiState> = uiState.asStateFlow()
