@@ -1,6 +1,10 @@
 package com.iliesnz.talkie_walkie_kotlin.network
 
+import com.google.gson.Gson
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
+import com.iliesnz.talkie_walkie_kotlin.shared.model.Packet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -11,18 +15,20 @@ class TcpClient: ITcpClient {
 
     val port: Int = 48067
 
+    private val gson = Gson()
+
     private var socket: Socket? = null
     private var dataIn: BufferedReader? = null
     private var dataOut: PrintWriter? = null
 
-    override fun ConnectToServer(ipAddress: String){
+    override fun connectToServer(ipAddress: String){
         socket = Socket(ipAddress, port)
 
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
         dataOut = PrintWriter(socket?.getOutputStream(), true)
     }
 
-    override fun DisconnectToServer() {
+    override fun disconnectToServer() {
         dataIn?.close()
         dataOut?.close()
         socket?.close()
@@ -31,15 +37,19 @@ class TcpClient: ITcpClient {
         socket = null
     }
 
-    override fun SendMessage(message: Objects){
-        dataOut?.println(message.toString())
+    override fun sendMessage(message: Any){
+        val stringToJson: String = gson.toJson(message)
+        dataOut?.println(stringToJson)
     }
 
-    override fun Listen() {
-        while (socket?.isClosed == false) {
-            val message = dataIn?.readLine()
+    suspend override fun listen() = withContext(Dispatchers.IO) {
 
-            // TODO: Faire sortitr quelque part
+        val s = socket
+        while (s != null && s.isConnected && !s.isClosed) {
+
+            val message = dataIn?.readLine()
+            val packet: Packet? = gson.fromJson(message, Packet::class.java)
+
         }
     }
 

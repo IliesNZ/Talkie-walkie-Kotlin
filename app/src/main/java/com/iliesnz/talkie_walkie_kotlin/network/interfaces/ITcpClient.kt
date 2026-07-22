@@ -2,11 +2,11 @@ package com.iliesnz.talkie_walkie_kotlin.network.interfaces
 
 import java.util.Objects
 interface ITcpClient {
-    fun ConnectToServer(ipAddress: String)
+    fun connectToServer(ipAddress: String)
 
-    fun DisconnectToServer()
+    fun disconnectToServer()
 
-    fun SendMessage(message: Objects)
+    fun sendMessage(message: Any)
 
-    fun Listen()
+    suspend fun listen()
 }

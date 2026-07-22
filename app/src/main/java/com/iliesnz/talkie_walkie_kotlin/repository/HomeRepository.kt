@@ -14,7 +14,8 @@ class HomeRepository(val applicationScope: CoroutineScope, private val tcpClient
         applicationScope.launch {
             withContext(Dispatchers.IO){
                 try {
-                    tcpClient.ConnectToServer(ipAddress)
+                    tcpClient.connectToServer(ipAddress)
+                    tcpClient.listen()
                 }
                 catch (e: Exception){
                     e.printStackTrace()
@@ -28,7 +29,7 @@ class HomeRepository(val applicationScope: CoroutineScope, private val tcpClient
         applicationScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    tcpClient.DisconnectToServer()
+                    tcpClient.disconnectToServer()
                 }
                 catch (e: Exception){
                     e.printStackTrace()
