@@ -8,34 +8,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeRepository(val applicationScope: CoroutineScope, private val tcpClient: ITcpClient, private val udpClient: IUdpClient) : IHomeRepository{
+class HomeRepository(private val applicationScope: CoroutineScope, private val tcpClient: ITcpClient, private val udpClient: IUdpClient) : IHomeRepository{
 
-    override fun connectToServer(ipAddress: String) {
-        applicationScope.launch {
-            withContext(Dispatchers.IO){
-                try {
-                    tcpClient.connectToServer(ipAddress)
-                    tcpClient.listen()
-                }
-                catch (e: Exception){
-                    e.printStackTrace()
-                }
+    override suspend fun connectToServer(ipAddress: String) = withContext(Dispatchers.IO) {
+        try {
+            tcpClient.connectToServer(ipAddress)
+            applicationScope.launch {
+                tcpClient.listen()
             }
-        }
-
-    }
-
-    override fun disconnectToServer() {
-        applicationScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    tcpClient.disconnectToServer()
-                }
-                catch (e: Exception){
-                    e.printStackTrace()
-                }
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
         }
     }
 
+    override suspend fun disconnectToServer() = withContext(Dispatchers.IO) {
+        try {
+            tcpClient.disconnectToServer()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            throw e
+        }
+    }
 }

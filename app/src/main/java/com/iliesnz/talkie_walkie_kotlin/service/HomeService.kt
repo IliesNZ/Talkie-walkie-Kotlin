@@ -5,7 +5,7 @@ import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IHomeService
 
 class HomeService (private val repository: IHomeRepository): IHomeService {
 
-    override fun connectToServer(ipAddress: String){
+    override suspend fun connectToServer(ipAddress: String){
 
         if(ipAddress.isEmpty()){
             throw IllegalArgumentException("IP address cannot be empty")
@@ -15,7 +15,7 @@ class HomeService (private val repository: IHomeRepository): IHomeService {
 
     }
 
-    override fun disconnectToServer() {
+    override suspend fun disconnectToServer() {
         repository.disconnectToServer()
     }
 

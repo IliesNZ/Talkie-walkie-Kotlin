@@ -11,8 +11,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.iliesnz.talkie_walkie_kotlin.R
 import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.state.HomeUiState
+import kotlinx.coroutines.launch
 
 class HomeView : AppCompatActivity() {
 
@@ -20,6 +26,7 @@ class HomeView : AppCompatActivity() {
     private lateinit var ipAddress: EditText
     private lateinit var chargement: ProgressBar
     private lateinit var talkieViewIntent: Intent
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +37,7 @@ class HomeView : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
 
         val app = application as TalkieWalkieApplication
         val homeViewmodel = app.container.homeViewModel
@@ -44,35 +52,46 @@ class HomeView : AppCompatActivity() {
             if (ipAddress.text.toString().isEmpty()) {
                 Toast.makeText(this, "Il manque l'ip du serveur !", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this, "Tentative de connexion...", Toast.LENGTH_LONG).show()
-                uiState("loading")
                 homeViewmodel.connectToServer(ipAddress.text.toString())
-                uiState("success")
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                homeViewmodel.uiStateReadOnly.collect {
+                    state -> uiState(state)
+                }
+            }
+        }
+
+
     }
-    fun uiState(state: String) {
+
+    private fun uiState(state: HomeUiState) {
         when (state) {
-            "base" -> {
+            is HomeUiState.Base -> {
                 ipAddress.visibility = View.VISIBLE
                 confirmation.visibility = View.VISIBLE
                 chargement.visibility = View.GONE
             }
 
-            "loading" -> {
+            is HomeUiState.Loading -> {
                 ipAddress.visibility = View.GONE
                 confirmation.visibility = View.GONE
                 chargement.visibility = View.VISIBLE
+                Toast.makeText(this, "Tentative de connexion...", Toast.LENGTH_LONG).show()
             }
 
-            "error" -> {
+            is HomeUiState.Error -> {
                 ipAddress.visibility = View.VISIBLE
                 confirmation.visibility = View.VISIBLE
                 chargement.visibility = View.GONE
+                Toast.makeText(this, "Erreur de connexion au serveur", Toast.LENGTH_LONG).show()
             }
 
-            "success" -> {
+            is HomeUiState.Success -> {
                 startActivity(talkieViewIntent)
+                finish()
             }
         }
     }

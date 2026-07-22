@@ -1,11 +1,12 @@
 package com.iliesnz.talkie_walkie_kotlin.repository.interfaces
 
 import com.iliesnz.talkie_walkie_kotlin.network.TcpClient
+import kotlinx.coroutines.Job
 
 interface IHomeRepository {
 
-    fun connectToServer(ipAddress: String)
+    suspend fun connectToServer(ipAddress: String): Job
 
-    fun disconnectToServer()
+    suspend fun disconnectToServer()
 
 }
