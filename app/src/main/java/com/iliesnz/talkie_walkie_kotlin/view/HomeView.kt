@@ -16,6 +16,11 @@ import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 
 class HomeView : AppCompatActivity() {
 
+    private lateinit var confirmation: Button
+    private lateinit var ipAddress: EditText
+    private lateinit var chargement: ProgressBar
+    private lateinit var talkieViewIntent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -29,24 +34,47 @@ class HomeView : AppCompatActivity() {
         val app = application as TalkieWalkieApplication
         val homeViewmodel = app.container.homeViewModel
 
-        val confirmation = findViewById<Button>(R.id.button)
-        val ipAddress = findViewById<EditText>(R.id.IP)
-        val chargement = findViewById<ProgressBar>(R.id.chargement)
+        confirmation = findViewById<Button>(R.id.button)
+        ipAddress = findViewById<EditText>(R.id.IP)
+        chargement = findViewById<ProgressBar>(R.id.chargement)
 
-        val talkieViewIntent = Intent(this, TalkieView::class.java)
+        talkieViewIntent = Intent(this, TalkieView::class.java)
 
         confirmation.setOnClickListener {
-            if (ipAddress.text.toString().isEmpty()){
+            if (ipAddress.text.toString().isEmpty()) {
                 Toast.makeText(this, "Il manque l'ip du serveur !", Toast.LENGTH_LONG).show()
-            }
-            else{
+            } else {
                 Toast.makeText(this, "Tentative de connexion...", Toast.LENGTH_LONG).show()
-                ipAddress.visibility = View.GONE
-                confirmation.visibility = View.GONE
-                chargement.visibility = View.VISIBLE
-
+                uiState("loading")
                 homeViewmodel.connectToServer(ipAddress.text.toString())
+                uiState("success")
             }
         }
     }
+    fun uiState(state: String) {
+        when (state) {
+            "base" -> {
+                ipAddress.visibility = View.VISIBLE
+                confirmation.visibility = View.VISIBLE
+                chargement.visibility = View.GONE
+            }
+
+            "loading" -> {
+                ipAddress.visibility = View.GONE
+                confirmation.visibility = View.GONE
+                chargement.visibility = View.VISIBLE
+            }
+
+            "error" -> {
+                ipAddress.visibility = View.VISIBLE
+                confirmation.visibility = View.VISIBLE
+                chargement.visibility = View.GONE
+            }
+
+            "success" -> {
+                startActivity(talkieViewIntent)
+            }
+        }
+    }
+
 }

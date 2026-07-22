@@ -19,6 +19,8 @@ class ClientHandler(client: Socket) {
 
     fun communication(){
 
+        println("Connexion établis !")
+
         while (true){
 
             val json = dataIn.readLine() ?: break
