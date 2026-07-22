@@ -45,7 +45,7 @@ class TcpClient: ITcpClient {
         val s = socket
         while (s != null && s.isConnected && !s.isClosed) {
 
-            val message: String? = dataIn?.readLine()
+            val message: String? = dataIn?.readLine() ?: break
             if (message != null) {
                 val packet = toPacket(message)
             }
