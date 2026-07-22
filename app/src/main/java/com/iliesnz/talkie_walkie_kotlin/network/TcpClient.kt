@@ -9,7 +9,6 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
-import java.util.Objects
 
 class TcpClient: ITcpClient {
 
@@ -37,9 +36,8 @@ class TcpClient: ITcpClient {
         socket = null
     }
 
-    override fun sendMessage(message: Any){
-        val stringToJson: String = gson.toJson(message)
-        dataOut?.println(stringToJson)
+    override fun sendMessage(message: Packet){
+        dataOut?.println(toJson(message))
     }
 
     suspend override fun listen() = withContext(Dispatchers.IO) {
@@ -47,10 +45,21 @@ class TcpClient: ITcpClient {
         val s = socket
         while (s != null && s.isConnected && !s.isClosed) {
 
-            val message = dataIn?.readLine()
-            val packet: Packet? = gson.fromJson(message, Packet::class.java)
-
+            val message: String? = dataIn?.readLine()
+            if (message != null) {
+                val packet = toPacket(message)
+            }
         }
+    }
+
+    override fun toJson(packet: Packet): String{
+        val jsonString: String = gson.toJson(packet)
+        return jsonString
+    }
+
+    override fun toPacket(data: String): Packet? {
+        val packet: Packet? = gson.fromJson(data, Packet::class.java)
+        return packet
     }
 
 }
