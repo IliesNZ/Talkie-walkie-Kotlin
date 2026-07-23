@@ -1,6 +1,6 @@
 package com.iliesnz.talkie_walkie_kotlin.service.interfaces
 
-interface IHomeService {
+interface ISessionService {
 
     suspend fun connectToServer(ipAddress: String)
 

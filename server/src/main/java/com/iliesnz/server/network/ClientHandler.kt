@@ -1,7 +1,8 @@
-package com.iliesnz.server
-
+package com.iliesnz.server.network
 
 import com.google.gson.Gson
+import com.iliesnz.server.service.interfaces.ISessionService
+import com.iliesnz.server.service.SessionService
 import com.iliesnz.shared.model.Packet
 import com.iliesnz.shared.protocol.Request
 import com.iliesnz.shared.protocol.Response
@@ -17,6 +18,8 @@ class ClientHandler(client: Socket) {
     val dataIn = BufferedReader(InputStreamReader(client.getInputStream()))
     val dataOut = PrintWriter(client.getOutputStream(), true)
 
+    val sessionService: ISessionService = SessionService()
+
     fun communication(){
 
         println("Connexion établis !")
@@ -26,25 +29,26 @@ class ClientHandler(client: Socket) {
             val json = dataIn.readLine() ?: break
             val packetIn: Packet? = toPacket(json)
 
-            val packetOut: Packet
-
-            when (packetIn?.getType()){
+            val packetOut = when (packetIn?.getType()){
 
                 Request.CREATE_SESSION.name -> {
 
+                    val code = sessionService.createCode()
+                    //Mise en place d'un map pour retenir le code de chaque client avec leur handler.
 
-                    //packetOut = Packet(Response.RETURN_SESSION.name, "Bonjour")
-                    //sendMessage(packetOut)
+                    Packet(Response.RETURN_SESSION.name, code)
                 }
 
                 Request.CHANGE_CHANNEL.name -> {
 
+                    //Changement du numéro de channel dans le map
 
-                    Response.OK.name
+                    Packet(Response.OK.name, "")
                 }
 
-                else -> Response.INVALID_REQUEST.name
+                else -> Packet(Response.INVALID_REQUEST.name, "Requête introuvable.")
             }
+            sendMessage(packetOut)
         }
     }
 
@@ -53,12 +57,10 @@ class ClientHandler(client: Socket) {
     }
 
     fun toJson(packet: Packet): String{
-        val jsonString: String = gson.toJson(packet)
-        return jsonString
+        return gson.toJson(packet)
     }
 
     fun toPacket(data: String): Packet? {
-        val packet: Packet? = gson.fromJson(data, Packet::class.java)
-        return packet
+        return gson.fromJson(data, Packet::class.java)
     }
 }

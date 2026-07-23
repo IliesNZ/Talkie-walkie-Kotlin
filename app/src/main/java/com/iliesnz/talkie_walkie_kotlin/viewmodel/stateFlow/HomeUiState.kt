@@ -1,4 +1,4 @@
-package com.iliesnz.talkie_walkie_kotlin.viewmodel.state
+package com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow
 
 sealed interface HomeUiState {
     object Base: HomeUiState

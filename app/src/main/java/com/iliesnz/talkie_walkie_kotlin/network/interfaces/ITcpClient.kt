@@ -1,6 +1,7 @@
 package com.iliesnz.talkie_walkie_kotlin.network.interfaces
 
 import com.iliesnz.shared.model.Packet
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 
 interface ITcpClient {
     suspend fun connectToServer(ipAddress: String)

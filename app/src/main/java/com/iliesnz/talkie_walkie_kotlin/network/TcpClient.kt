@@ -2,15 +2,19 @@ package com.iliesnz.talkie_walkie_kotlin.network
 
 import com.iliesnz.shared.model.Packet
 import com.google.gson.Gson
+import com.iliesnz.shared.protocol.Request
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class TcpClient: ITcpClient {
+class TcpClient(private val packetHandler: PacketHandler): ITcpClient {
 
     val port: Int = 48067
 
@@ -25,6 +29,9 @@ class TcpClient: ITcpClient {
 
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
         dataOut = PrintWriter(socket?.getOutputStream(), true)
+
+        val packet = Packet(Request.CREATE_SESSION.name, "Bonjour")
+        sendMessage(packet)
     }
 
     override fun disconnectToServer() {
@@ -45,9 +52,11 @@ class TcpClient: ITcpClient {
         val s = socket
         while (s != null && s.isConnected && !s.isClosed) {
 
-            val message: String? = dataIn?.readLine() ?: break
-            if (message != null) {
-                val packet = toPacket(message)
+            val message: String = dataIn?.readLine() ?: break
+            val packet = toPacket(message)
+
+            if (packet is Packet){
+                packetHandler.emit(packet)
             }
         }
     }

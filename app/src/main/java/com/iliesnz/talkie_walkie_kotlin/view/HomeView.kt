@@ -12,12 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.iliesnz.talkie_walkie_kotlin.R
 import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
-import com.iliesnz.talkie_walkie_kotlin.viewmodel.state.HomeUiState
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.HomeUiState
 import kotlinx.coroutines.launch
 
 class HomeView : AppCompatActivity() {
