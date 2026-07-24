@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.iliesnz.server.service.interfaces.ISessionService
 import com.iliesnz.server.service.SessionService
 import com.iliesnz.shared.model.Packet
+import com.iliesnz.shared.model.Session
 import com.iliesnz.shared.protocol.Request
 import com.iliesnz.shared.protocol.Response
 import java.io.BufferedReader
@@ -34,6 +35,7 @@ class ClientHandler(client: Socket) {
                 Request.CREATE_SESSION.name -> {
 
                     val code = sessionService.createCode()
+                    val session: Session = Session(code, 1)
                     //Mise en place d'un map pour retenir le code de chaque client avec leur handler.
 
                     Packet(Response.RETURN_SESSION.name, code)

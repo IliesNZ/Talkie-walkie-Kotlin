@@ -23,6 +23,6 @@ class AppContainer(applicationScope: CoroutineScope) {       //Utilisation pour 
     private val sessionService: ISessionService = SessionService(sessionRepository)
 
     val homeViewModel = HomeViewmodel(sessionService)
-    val talkieViewModel = TalkieViewModel(packetHandler)
+    val talkieViewModel = TalkieViewModel(sessionService, packetHandler)
 
 }

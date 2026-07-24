@@ -2,10 +2,10 @@ package com.iliesnz.shared.model
 
 class Session {
 
-    private var id: String? = null
+    private var id: Int? = null
     private var channel: Int? = null
 
-    fun Session(id: String, channel: Int){
+    constructor(id: Int, channel: Int){
         this.id = id
         this.channel = channel
     }
@@ -18,7 +18,7 @@ class Session {
         return this.channel
     }
 
-    fun getId(): String? {
+    fun getId(): Int? {
         return this.id
     }
 
