@@ -12,7 +12,7 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class ClientHandler(client: Socket) {
+class ClientHandler(private val client: Socket) : Runnable {
 
     val gson = Gson()
 
@@ -21,6 +21,10 @@ class ClientHandler(client: Socket) {
 
     val sessionService: ISessionService = SessionService()
 
+    override fun run() {
+        communication()
+    }
+
     fun communication(){
 
         println("Connexion établis !")
@@ -28,22 +32,25 @@ class ClientHandler(client: Socket) {
         while (true){
 
             val json = dataIn.readLine() ?: break
-            val packetIn: Packet? = toPacket(json)
+            val packetIn: Packet = toPacket(json) as Packet
 
             val packetOut = when (packetIn?.getType()){
 
                 Request.CREATE_SESSION.name -> {
 
                     val code = sessionService.createCode()
-                    val session: Session = Session(code, 1)
-                    //Mise en place d'un map pour retenir le code de chaque client avec leur handler.
+                    SessionManager.addClient(code, 1)
 
                     Packet(Response.RETURN_SESSION.name, code)
                 }
 
                 Request.CHANGE_CHANNEL.name -> {
+                    val session = gson.fromJson(gson.toJsonTree(packetIn.getData()), Session::class.java)
 
-                    //Changement du numéro de channel dans le map
+                    if (session != null) {
+                        println("Nouveau channel = " + session.getChannel())
+                        SessionManager.changeClientChannel(session)
+                    }
 
                     Packet(Response.OK.name, "")
                 }
@@ -62,7 +69,7 @@ class ClientHandler(client: Socket) {
         return gson.toJson(packet)
     }
 
-    fun toPacket(data: String): Packet? {
+    fun toPacket(data: String): Packet {
         return gson.fromJson(data, Packet::class.java)
     }
 }

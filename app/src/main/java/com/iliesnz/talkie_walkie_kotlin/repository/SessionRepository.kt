@@ -1,5 +1,8 @@
 package com.iliesnz.talkie_walkie_kotlin.repository
 
+import com.iliesnz.shared.model.Packet
+import com.iliesnz.shared.model.Session
+import com.iliesnz.shared.protocol.Request
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.IUdpClient
 import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.ISessionRepository
@@ -30,6 +33,16 @@ class SessionRepository(private val applicationScope: CoroutineScope, private va
             tcpClient.disconnectToServer()
         }
         catch (e: Exception){
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+    override suspend fun changeChannel(session: Session) = withContext(Dispatchers.IO) {
+        try {
+            val packet = Packet(Request.CHANGE_CHANNEL.name, session)
+            tcpClient.sendMessage(packet)
+        } catch (e: Exception) {
             e.printStackTrace()
             throw e
         }

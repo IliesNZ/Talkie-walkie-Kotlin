@@ -1,11 +1,13 @@
 package com.iliesnz.shared.model
 
-class Session {
+import java.io.Serializable
+
+class Session: Serializable {
 
     private var id: Int? = null
     private var channel: Int? = null
 
-    constructor(id: Int, channel: Int){
+    constructor(id: Int?, channel: Int?){
         this.id = id
         this.channel = channel
     }

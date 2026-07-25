@@ -1,23 +1,23 @@
 package com.iliesnz.server.model
 
-import kotlinx.coroutines.channels.Channel
 import java.net.InetSocketAddress
-import kotlin.time.Instant
 
 class ClientInfo {
 
     private var channel: Int = 1
     private var udpInstance: InetSocketAddress?= null
 
-    constructor(channel: Int, udpInstance: InetSocketAddress) {
+    constructor(channel: Int) {
         this.channel = channel
-        this.udpInstance = udpInstance
+        this.udpInstance = null
     }
 
     fun getChannel(): Int = channel
 
-    fun setChannel(channel: Int) {
-        this.channel = channel
+    fun setChannel(channel: Int?) {
+        if (channel != null) {
+            this.channel = channel
+        }
     }
 
     fun getUdpInstance(): InetSocketAddress? = udpInstance

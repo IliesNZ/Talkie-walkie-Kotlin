@@ -6,4 +6,8 @@ interface ISessionService {
 
     suspend fun disconnectToServer()
 
+    suspend fun changeChannel(channel: Int)
+
+    fun changeSessionCode(code: Int)
+
 }

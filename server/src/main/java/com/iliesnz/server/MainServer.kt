@@ -17,7 +17,7 @@ fun main() = runBlocking(Dispatchers.IO) {
         val client = serverSocket.accept()
         launch {
             val handler = ClientHandler(client)
-            handler.communication()
+            handler.run()
         }
     }
 

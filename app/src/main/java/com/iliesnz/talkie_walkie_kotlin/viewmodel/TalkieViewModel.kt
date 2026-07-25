@@ -26,6 +26,16 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
         }
     }
 
+    fun changeChannel(channel: Int){
+        viewModelScope.launch {
+            try {
+                sessionService.changeChannel(channel)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun listening(){
         viewModelScope.launch {
             packetHandler.packetInReadOnly.collect {
@@ -37,7 +47,10 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     private fun packetManager(packet: Packet){
         when(packet.getType()){
             "RETURN_SESSION" -> {
+                val data = (packet.getData() as Number).toInt()
 
+                sessionService.changeSessionCode(data)
+                println("Code de la session : " + data)
             }
 
             "OK" -> {

@@ -1,5 +1,6 @@
 package com.iliesnz.talkie_walkie_kotlin.container
 
+import com.iliesnz.talkie_walkie_kotlin.network.SessionManager
 import com.iliesnz.talkie_walkie_kotlin.network.TcpClient
 import com.iliesnz.talkie_walkie_kotlin.network.UdpClient
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
@@ -15,12 +16,13 @@ import kotlinx.coroutines.CoroutineScope
 
 class AppContainer(applicationScope: CoroutineScope) {       //Utilisation pour le model MVVM => passage des instances en paramètre à partir de la view
 
+    private val sessionManager = SessionManager()
     private val packetHandler = PacketHandler()
     private val tcpClient: ITcpClient = TcpClient(packetHandler)
     private val udpClient: IUdpClient = UdpClient()
 
     private val sessionRepository: ISessionRepository = SessionRepository(applicationScope, tcpClient, udpClient)
-    private val sessionService: ISessionService = SessionService(sessionRepository)
+    private val sessionService: ISessionService = SessionService(sessionRepository, sessionManager)
 
     val homeViewModel = HomeViewmodel(sessionService)
     val talkieViewModel = TalkieViewModel(sessionService, packetHandler)

@@ -75,9 +75,8 @@ class TalkieView : AppCompatActivity() {
         numberPicker.setOnScrollListener { view, scrollState ->
             if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {         // SCROLL_STATE_IDLE = On ne touche plus la roue
                 val finalValue = numberPicker.value
-
                 blockPicker()
-                Toast.makeText(this, "Valeur finale fixée : $finalValue", Toast.LENGTH_SHORT).show()
+                talkieViewModel.changeChannel(finalValue)
             }
         }
 
