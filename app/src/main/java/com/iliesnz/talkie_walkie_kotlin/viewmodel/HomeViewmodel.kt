@@ -14,11 +14,11 @@ class HomeViewmodel(private val service: ISessionService): ViewModel() {
     private var uiState = MutableStateFlow<HomeUiState>(HomeUiState.Base)
     var uiStateReadOnly: StateFlow<HomeUiState> = uiState.asStateFlow()
 
-    fun connectToServer(ipAddress: String) {
+    fun connectToTCP(ipAddress: String) {
         viewModelScope.launch {
             uiState.value = HomeUiState.Loading
             try {
-                service.connectToServer(ipAddress)
+                service.connectToTCP(ipAddress)
                 uiState.value = HomeUiState.Success()
             } catch (e: Exception) {
                 e.printStackTrace()

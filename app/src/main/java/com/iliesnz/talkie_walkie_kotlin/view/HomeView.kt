@@ -51,7 +51,7 @@ class HomeView : AppCompatActivity() {
             if (ipAddress.text.toString().isEmpty()) {
                 Toast.makeText(this, "Il manque l'ip du serveur !", Toast.LENGTH_LONG).show()
             } else {
-                homeViewmodel.connectToServer(ipAddress.text.toString())
+                homeViewmodel.connectToTCP(ipAddress.text.toString())
             }
         }
 

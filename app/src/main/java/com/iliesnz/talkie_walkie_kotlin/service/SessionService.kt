@@ -7,18 +7,20 @@ import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
 
 class SessionService (private val repository: ISessionRepository, private val sessionManager: SessionManager): ISessionService {
 
-    override suspend fun connectToServer(ipAddress: String){
+    override suspend fun connectToTCP(ipAddress: String){
 
         if(ipAddress.isEmpty()){
             throw IllegalArgumentException("IP address cannot be empty")
         }
 
-        repository.connectToServer(ipAddress)
+        sessionManager.setIpAddress(ipAddress)
+        repository.connectToTCP(ipAddress)
 
     }
 
-    override suspend fun disconnectToServer() {
-        repository.disconnectToServer()
+    override suspend fun disconnectToTCP() {
+        repository.disconnectToTCP()
+        sessionManager.cleanSession()
     }
 
     override suspend fun changeChannel(channel: Int) {
@@ -39,6 +41,16 @@ class SessionService (private val repository: ISessionRepository, private val se
 
     override fun changeSessionCode(code: Int){
         sessionManager.setSessionCode(code)
+    }
+
+    override suspend fun startCommunication() {
+        val ipAddress = sessionManager.getIpAddress()
+
+        repository.startCommunication(ipAddress)
+    }
+
+    override fun stopCommunication() {
+        repository.stopCommunication()
     }
 
 }

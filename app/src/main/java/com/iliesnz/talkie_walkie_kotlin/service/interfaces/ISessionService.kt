@@ -2,12 +2,16 @@ package com.iliesnz.talkie_walkie_kotlin.service.interfaces
 
 interface ISessionService {
 
-    suspend fun connectToServer(ipAddress: String)
+    suspend fun connectToTCP(ipAddress: String)
 
-    suspend fun disconnectToServer()
+    suspend fun disconnectToTCP()
 
     suspend fun changeChannel(channel: Int)
 
     fun changeSessionCode(code: Int)
+
+    suspend fun startCommunication()
+
+    fun stopCommunication()
 
 }

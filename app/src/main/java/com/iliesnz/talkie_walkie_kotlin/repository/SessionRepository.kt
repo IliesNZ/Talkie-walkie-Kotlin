@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class SessionRepository(private val applicationScope: CoroutineScope, private val tcpClient: ITcpClient, private val udpClient: IUdpClient) : ISessionRepository{
 
-    override suspend fun connectToServer(ipAddress: String) = withContext(Dispatchers.IO) {
+    override suspend fun connectToTCP(ipAddress: String) = withContext(Dispatchers.IO) {
 
         println("tentative de connexion.")
 
@@ -28,7 +28,7 @@ class SessionRepository(private val applicationScope: CoroutineScope, private va
         }
     }
 
-    override suspend fun disconnectToServer() = withContext(Dispatchers.IO) {
+    override suspend fun disconnectToTCP() = withContext(Dispatchers.IO) {
         try {
             tcpClient.disconnectToServer()
         }
@@ -47,4 +47,21 @@ class SessionRepository(private val applicationScope: CoroutineScope, private va
             throw e
         }
     }
+
+    override suspend fun startCommunication(ipAddress: String?) {
+        try {
+            applicationScope.launch {
+                udpClient.startCommunication(ipAddress)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+    override fun stopCommunication() {
+        udpClient.stopCommunication()
+    }
+
+
 }

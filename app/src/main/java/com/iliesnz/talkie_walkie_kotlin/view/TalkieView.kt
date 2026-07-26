@@ -1,7 +1,6 @@
 package com.iliesnz.talkie_walkie_kotlin.view
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -19,7 +18,6 @@ import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TalkieView : AppCompatActivity() {
 
@@ -52,7 +50,7 @@ class TalkieView : AppCompatActivity() {
         val homeViewIntent = Intent(this, HomeView::class.java)
 
         back.setOnClickListener {
-            talkieViewModel.disconnectToServer()
+            talkieViewModel.disconnectToTCP()
             startActivity(homeViewIntent)
         }
 
@@ -60,11 +58,13 @@ class TalkieView : AppCompatActivity() {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     Toast.makeText(this, "Parler...", Toast.LENGTH_LONG).show()
+                    talkieViewModel.startCommunication()
                     true
                 }
 
                 MotionEvent.ACTION_UP -> {
                     Toast.makeText(this, "Stop...", Toast.LENGTH_LONG).show()
+                    talkieViewModel.stopCommunication()
                     true
                 }
 

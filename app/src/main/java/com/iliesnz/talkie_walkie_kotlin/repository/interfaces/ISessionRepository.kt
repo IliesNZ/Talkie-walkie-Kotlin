@@ -5,10 +5,14 @@ import kotlinx.coroutines.Job
 
 interface ISessionRepository {
 
-    suspend fun connectToServer(ipAddress: String): Job
+    suspend fun connectToTCP(ipAddress: String): Job
 
-    suspend fun disconnectToServer()
+    suspend fun disconnectToTCP()
 
     suspend fun changeChannel(session: Session)
+
+    suspend fun startCommunication(ipAddress: String?)
+
+    fun stopCommunication()
 
 }

@@ -27,5 +27,3 @@ rootProject.name = "Talkie-Walkie-Kotlin"
 include(":app")
 include(":shared")
 include(":server")
-include(":shared")
-include(":server")

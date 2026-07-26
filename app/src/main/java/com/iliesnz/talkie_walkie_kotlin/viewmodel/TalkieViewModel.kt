@@ -3,16 +3,13 @@ package com.iliesnz.talkie_walkie_kotlin.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.shared.model.Packet
-import com.iliesnz.talkie_walkie_kotlin.service.SessionService
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class TalkieViewModel(private val sessionService: ISessionService, private val packetHandler: PacketHandler) : ViewModel() {
@@ -20,9 +17,9 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     private val uiState = MutableStateFlow<TalkieUiState>(TalkieUiState.base)
     val uiStateReadOnly: StateFlow<TalkieUiState> = uiState.asStateFlow()
 
-    fun disconnectToServer(){
+    fun disconnectToTCP(){
         viewModelScope.launch {
-            sessionService.disconnectToServer()
+            sessionService.disconnectToTCP()
         }
     }
 
@@ -34,6 +31,21 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
                 e.printStackTrace()
             }
         }
+    }
+
+    fun startCommunication(){
+        viewModelScope.launch {
+            try {
+                sessionService.startCommunication()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun stopCommunication(){
+        sessionService.stopCommunication()
     }
 
     fun listening(){

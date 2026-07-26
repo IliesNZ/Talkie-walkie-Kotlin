@@ -30,7 +30,7 @@ class TcpClient(private val packetHandler: PacketHandler): ITcpClient {
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
         dataOut = PrintWriter(socket?.getOutputStream(), true)
 
-        val packet = Packet(Request.CREATE_SESSION.name, "Bonjour")
+        val packet = Packet(Request.CREATE_SESSION.name, "")
         sendMessage(packet)
     }
 
