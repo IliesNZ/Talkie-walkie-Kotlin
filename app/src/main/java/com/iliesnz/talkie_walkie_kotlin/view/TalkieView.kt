@@ -47,11 +47,10 @@ class TalkieView : AppCompatActivity() {
         numberPicker.minValue = 1
         numberPicker.maxValue = 15
 
-        val homeViewIntent = Intent(this, HomeView::class.java)
 
         back.setOnClickListener {
             talkieViewModel.disconnectToTCP()
-            startActivity(homeViewIntent)
+            finish()
         }
 
         talk.setOnTouchListener { view, event ->

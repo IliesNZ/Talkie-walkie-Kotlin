@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
+import java.net.InetSocketAddress
 import java.net.Socket
 
 class TcpClient(private val packetHandler: PacketHandler): ITcpClient {
@@ -25,7 +26,9 @@ class TcpClient(private val packetHandler: PacketHandler): ITcpClient {
     private var dataOut: PrintWriter? = null
 
     override suspend fun connectToServer(ipAddress: String) = withContext(Dispatchers.IO) {
-        socket = Socket(ipAddress, port)
+
+        socket = Socket()
+        socket?.connect(InetSocketAddress(ipAddress, port), 5000)
 
         dataIn = BufferedReader(InputStreamReader(socket?.getInputStream()))
         dataOut = PrintWriter(socket?.getOutputStream(), true)
