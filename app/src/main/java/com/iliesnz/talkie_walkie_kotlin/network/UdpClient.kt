@@ -6,8 +6,6 @@ import kotlinx.coroutines.withContext
 
 class UdpClient(): IUdpClient {
 
-    var stop = false
-
     override suspend fun startCommunication(serverAddress: String?) = withContext(Dispatchers.IO) {
 
     }
