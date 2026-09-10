@@ -1,6 +1,5 @@
 package com.iliesnz.talkie_walkie_kotlin.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IHomeService
