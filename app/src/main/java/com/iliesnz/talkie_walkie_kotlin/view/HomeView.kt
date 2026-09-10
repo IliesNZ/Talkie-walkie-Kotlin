@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.iliesnz.talkie_walkie_kotlin.R
@@ -49,11 +48,7 @@ class HomeView : AppCompatActivity() {
         talkieViewIntent = Intent(this, TalkieView::class.java)
 
         confirmation.setOnClickListener {
-            if (ipAddress.text.toString().isEmpty()) {
-                Toast.makeText(this, "Il manque l'ip du serveur !", Toast.LENGTH_LONG).show()
-            } else {
                 homeViewmodel.connectToServer(ipAddress.text.toString())
-            }
         }
 
         lifecycleScope.launch {
@@ -85,7 +80,9 @@ class HomeView : AppCompatActivity() {
                 ipAddress.visibility = View.VISIBLE
                 confirmation.visibility = View.VISIBLE
                 chargement.visibility = View.GONE
-                Toast.makeText(this, "Erreur de connexion au serveur", Toast.LENGTH_LONG).show()
+
+                val errorLog = state.message ?:"Erreur de connexion au serveur"
+                Toast.makeText(this, errorLog, Toast.LENGTH_LONG).show()
             }
 
             is HomeUiState.Success -> {

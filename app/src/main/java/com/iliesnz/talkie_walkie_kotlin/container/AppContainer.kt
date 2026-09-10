@@ -1,6 +1,5 @@
 package com.iliesnz.talkie_walkie_kotlin.container
 
-import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 import com.iliesnz.talkie_walkie_kotlin.network.TcpClient
 import com.iliesnz.talkie_walkie_kotlin.network.UdpClient
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient

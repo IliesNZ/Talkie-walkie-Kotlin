@@ -1,18 +1,14 @@
 package com.iliesnz.talkie_walkie_kotlin.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IHomeService
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.state.HomeUiState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 
 class HomeViewmodel(private val service: IHomeService): ViewModel() {
 
@@ -20,6 +16,12 @@ class HomeViewmodel(private val service: IHomeService): ViewModel() {
     var uiStateReadOnly: StateFlow<HomeUiState> = uiState.asStateFlow()
 
     fun connectToServer(ipAddress: String) {
+
+        if (ipAddress.isEmpty()) {
+            uiState.value = HomeUiState.Error("Il manque l'ip du serveur !")
+            return
+        }
+
         viewModelScope.launch {
             uiState.value = HomeUiState.Loading
             try {
@@ -27,7 +29,7 @@ class HomeViewmodel(private val service: IHomeService): ViewModel() {
                 uiState.value = HomeUiState.Success()
             } catch (e: Exception) {
                 e.printStackTrace()
-                uiState.value = HomeUiState.Error()
+                uiState.value = HomeUiState.Error("Serveur introuvable")
             }
         }
     }
