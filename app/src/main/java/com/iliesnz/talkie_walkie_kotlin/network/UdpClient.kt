@@ -14,11 +14,11 @@ class UdpClient: IUdpClient {
 
     }
 
-    override suspend fun startCommunication() = withContext(Dispatchers.IO) {
+    override suspend fun sendAudio(audioData: ByteArray) = withContext(Dispatchers.IO) {
 
     }
 
-    override fun stopCommunication(){
+    override fun stopSendAudio(){
 
     }
 

@@ -6,8 +6,8 @@ interface IUdpClient {
 
     fun disconnectToServer()
 
-    suspend fun startCommunication()
+    suspend fun sendAudio(audioData: ByteArray)
 
-    fun stopCommunication()
+    fun stopSendAudio()
 
 }

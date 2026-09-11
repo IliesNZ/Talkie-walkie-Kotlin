@@ -22,7 +22,10 @@ class HomeViewmodel(private val service: ISessionService): ViewModel() {
             try {
                 service.connectToTCP(ipAddress)
                 uiState.value = HomeUiState.Success()
-            } catch (e: Exception) {
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+                uiState.value = HomeUiState.Error("Il faut entrer une adresse IP !")
+            }catch (e: Exception) {
                 e.printStackTrace()
                 uiState.value = HomeUiState.Error("Serveur introuvable")
             }

@@ -11,12 +11,4 @@ interface ISessionRepository {
 
     suspend fun changeChannel(session: Session)
 
-    suspend fun connectToUDP(ipAddress: String?)
-
-    fun disconnectToUDP()
-
-    suspend fun startCommunication()
-
-    fun stopCommunication()
-
 }

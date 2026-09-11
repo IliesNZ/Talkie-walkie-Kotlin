@@ -4,14 +4,13 @@ import com.iliesnz.shared.model.Packet
 import com.iliesnz.shared.model.Session
 import com.iliesnz.shared.protocol.Request
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.ITcpClient
-import com.iliesnz.talkie_walkie_kotlin.network.interfaces.IUdpClient
 import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.ISessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SessionRepository(private val applicationScope: CoroutineScope, private val tcpClient: ITcpClient, private val udpClient: IUdpClient) : ISessionRepository{
+class SessionRepository(private val applicationScope: CoroutineScope, private val tcpClient: ITcpClient) : ISessionRepository{
 
     override suspend fun connectToTCP(ipAddress: String) = withContext(Dispatchers.IO) {
 
@@ -47,29 +46,5 @@ class SessionRepository(private val applicationScope: CoroutineScope, private va
             throw e
         }
     }
-
-    override suspend fun connectToUDP(ipAddress: String?) {
-
-    }
-
-    override fun disconnectToUDP() {
-
-    }
-
-    override suspend fun startCommunication() {
-        try {
-            applicationScope.launch {
-                udpClient.startCommunication()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        }
-    }
-
-    override fun stopCommunication() {
-        udpClient.stopCommunication()
-    }
-
 
 }
