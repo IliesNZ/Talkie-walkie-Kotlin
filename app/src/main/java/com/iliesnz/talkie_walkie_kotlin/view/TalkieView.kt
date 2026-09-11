@@ -50,7 +50,6 @@ class TalkieView : AppCompatActivity() {
 
         back.setOnClickListener {
             talkieViewModel.disconnectToTCP()
-            talkieViewModel.disconnectToUDP()
             finish()
         }
 

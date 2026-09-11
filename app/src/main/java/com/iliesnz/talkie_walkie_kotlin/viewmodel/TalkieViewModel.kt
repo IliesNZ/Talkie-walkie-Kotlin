@@ -24,12 +24,6 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
         }
     }
 
-    fun disconnectToUDP(){
-        viewModelScope.launch {
-            audioService.disconnectToUDP()
-        }
-    }
-
     fun changeChannel(channel: Int){
         viewModelScope.launch {
             try {

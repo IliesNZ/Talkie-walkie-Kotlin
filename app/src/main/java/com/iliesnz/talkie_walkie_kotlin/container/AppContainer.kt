@@ -24,7 +24,7 @@ class AppContainer(applicationScope: CoroutineScope) {       //Utilisation pour 
     private val packetHandler = PacketHandler()
 
     private val tcpClient: ITcpClient = TcpClient(packetHandler)
-    private val udpClient: IUdpClient = UdpClient()
+    private val udpClient: IUdpClient = UdpClient(sessionManager)
 
     private val sessionRepository: ISessionRepository = SessionRepository(applicationScope, tcpClient)
     private val audioRepository: IAudioRepository = AudioRepository(applicationScope, udpClient)

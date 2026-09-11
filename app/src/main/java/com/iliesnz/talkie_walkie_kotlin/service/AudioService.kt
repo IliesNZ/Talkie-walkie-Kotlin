@@ -15,15 +15,6 @@ class AudioService(private val repository: IAudioRepository, private val session
 
     @Volatile var isRecording = false
 
-    override suspend fun connectToUDP() {
-        val ipAddress: String? = sessionManager.getIpAddress()
-        repository.connectToUDP(ipAddress)
-    }
-
-    override fun disconnectToUDP() {
-        repository.disconnectToUDP()
-    }
-
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     override suspend fun startCommunication() = withContext(Dispatchers.IO) {     //On arrète d'écouter pour parler (une seule personne peut parler à la fois)
 
@@ -71,7 +62,6 @@ class AudioService(private val repository: IAudioRepository, private val session
 
     override fun stopCommunication() {
         isRecording = false
-        repository.stopSendAudio()  //Pour pouvoir écouter à nouveau
     }
 
 }

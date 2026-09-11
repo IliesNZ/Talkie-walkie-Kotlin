@@ -7,14 +7,6 @@ import kotlinx.coroutines.launch
 
 class AudioRepository(private val applicationScope: CoroutineScope, private val udpClient: IUdpClient): IAudioRepository {
 
-    override suspend fun connectToUDP(ipAddress: String?) {
-
-    }
-
-    override fun disconnectToUDP() {
-
-    }
-
     override suspend fun sendAudio(audioData: ByteArray) {
         try {
             applicationScope.launch {
@@ -24,10 +16,6 @@ class AudioRepository(private val applicationScope: CoroutineScope, private val 
             e.printStackTrace()
             throw e
         }
-    }
-
-    override fun stopSendAudio() {
-        udpClient.stopSendAudio()
     }
 
 }
