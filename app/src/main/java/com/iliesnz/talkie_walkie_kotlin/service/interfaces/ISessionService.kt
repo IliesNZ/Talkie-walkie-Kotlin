@@ -10,8 +10,4 @@ interface ISessionService {
 
     fun changeSessionCode(code: Int)
 
-    suspend fun startCommunication()
-
-    fun stopCommunication()
-
 }

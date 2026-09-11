@@ -10,6 +10,8 @@ import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
 import com.iliesnz.talkie_walkie_kotlin.service.SessionService
 import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.ISessionRepository
 import com.iliesnz.talkie_walkie_kotlin.repository.SessionRepository
+import com.iliesnz.talkie_walkie_kotlin.service.AudioService
+import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.TalkieViewModel
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +25,9 @@ class AppContainer(applicationScope: CoroutineScope) {       //Utilisation pour 
 
     private val sessionRepository: ISessionRepository = SessionRepository(applicationScope, tcpClient, udpClient)
     private val sessionService: ISessionService = SessionService(sessionRepository, sessionManager)
+    private val audioService: IAudioService = AudioService(sessionRepository, sessionManager)
 
     val homeViewModel = HomeViewmodel(sessionService)
-    val talkieViewModel = TalkieViewModel(sessionService, packetHandler)
+    val talkieViewModel = TalkieViewModel(sessionService, audioService, packetHandler)
 
 }

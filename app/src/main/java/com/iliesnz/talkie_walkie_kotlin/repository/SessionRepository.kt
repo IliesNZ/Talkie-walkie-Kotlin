@@ -48,10 +48,18 @@ class SessionRepository(private val applicationScope: CoroutineScope, private va
         }
     }
 
-    override suspend fun startCommunication(ipAddress: String?) {
+    override suspend fun connectToUDP(ipAddress: String?) {
+
+    }
+
+    override fun disconnectToUDP() {
+
+    }
+
+    override suspend fun startCommunication() {
         try {
             applicationScope.launch {
-                udpClient.startCommunication(ipAddress)
+                udpClient.startCommunication()
             }
         } catch (e: Exception) {
             e.printStackTrace()

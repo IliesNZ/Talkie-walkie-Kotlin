@@ -1,7 +1,6 @@
 package com.iliesnz.talkie_walkie_kotlin.view
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -18,6 +17,7 @@ import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class TalkieView : AppCompatActivity() {
 
@@ -50,6 +50,7 @@ class TalkieView : AppCompatActivity() {
 
         back.setOnClickListener {
             talkieViewModel.disconnectToTCP()
+            talkieViewModel.disconnectToUDP()
             finish()
         }
 
@@ -113,7 +114,7 @@ class TalkieView : AppCompatActivity() {
     private fun blockPicker() {
         lifecycleScope.launch {
             numberPicker.isEnabled = false
-            delay(3000)
+            delay(3000.milliseconds)
             numberPicker.isEnabled = true
         }
     }

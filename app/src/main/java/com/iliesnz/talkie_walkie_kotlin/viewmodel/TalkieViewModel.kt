@@ -3,6 +3,7 @@ package com.iliesnz.talkie_walkie_kotlin.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.shared.model.Packet
+import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class TalkieViewModel(private val sessionService: ISessionService, private val packetHandler: PacketHandler) : ViewModel() {
+class TalkieViewModel(private val sessionService: ISessionService, private val audioService: IAudioService, private val packetHandler: PacketHandler) : ViewModel() {
 
     private val uiState = MutableStateFlow<TalkieUiState>(TalkieUiState.base)
     val uiStateReadOnly: StateFlow<TalkieUiState> = uiState.asStateFlow()
@@ -20,6 +21,12 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     fun disconnectToTCP(){
         viewModelScope.launch {
             sessionService.disconnectToTCP()
+        }
+    }
+
+    fun disconnectToUDP(){
+        viewModelScope.launch {
+            audioService.disconnectToUDP()
         }
     }
 
@@ -36,7 +43,7 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     fun startCommunication(){
         viewModelScope.launch {
             try {
-                sessionService.startCommunication()
+                audioService.startCommunication()
             }
             catch (e: Exception){
                 e.printStackTrace()
@@ -45,7 +52,7 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     }
 
     fun stopCommunication(){
-        sessionService.stopCommunication()
+        audioService.stopCommunication()
     }
 
     fun listening(){

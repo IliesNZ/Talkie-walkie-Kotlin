@@ -1,6 +1,5 @@
 package com.iliesnz.talkie_walkie_kotlin.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
@@ -17,11 +16,6 @@ class HomeViewmodel(private val service: ISessionService): ViewModel() {
     var uiStateReadOnly: StateFlow<HomeUiState> = uiState.asStateFlow()
 
     fun connectToTCP(ipAddress: String) {
-
-        if (ipAddress.isEmpty()) {
-            uiState.value = HomeUiState.Error("Il manque l'ip du serveur !")
-            return
-        }
 
         viewModelScope.launch {
             uiState.value = HomeUiState.Loading
