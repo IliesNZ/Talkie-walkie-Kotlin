@@ -4,4 +4,6 @@ interface IUdpClient {
 
     suspend fun sendAudio(audioData: ByteArray)
 
+    suspend fun listen()
+
 }

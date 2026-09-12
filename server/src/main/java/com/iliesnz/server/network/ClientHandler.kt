@@ -32,9 +32,9 @@ class ClientHandler(private val client: Socket) : Runnable {
         while (true){
 
             val json = dataIn.readLine() ?: break
-            val packetIn: Packet = toPacket(json) as Packet
+            val packetIn: Packet = toPacket(json)
 
-            val packetOut = when (packetIn?.getType()){
+            val packetOut = when (packetIn.getType()){
 
                 Request.CREATE_SESSION.name -> {
 
@@ -48,7 +48,7 @@ class ClientHandler(private val client: Socket) : Runnable {
                     val session = gson.fromJson(gson.toJsonTree(packetIn.getData()), Session::class.java)
 
                     if (session != null) {
-                        println("Nouveau channel = " + session.getChannel())
+                        println("Nouveau channel = " + session.getChannel() + " du client " + session.getId())
                         SessionManager.changeClientChannel(session)
                     }
 
@@ -62,7 +62,7 @@ class ClientHandler(private val client: Socket) : Runnable {
     }
 
     fun sendMessage(message: Packet){
-        dataOut?.println(toJson(message))
+        dataOut.println(toJson(message))
     }
 
     fun toJson(packet: Packet): String{
