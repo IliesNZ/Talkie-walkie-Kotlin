@@ -6,21 +6,30 @@ import kotlinx.coroutines.withContext
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
+import java.nio.ByteBuffer
 
 class UdpClient(private val sessionManager: SessionManager): IUdpClient {
 
-    private var socket: DatagramSocket? = null
-    private var serverAddress: InetAddress? = sessionManager.getIpAddress() as InetAddress?
+    private var socket: DatagramSocket = DatagramSocket()
     private var serverPort: Int = 48068
 
 
     override suspend fun sendAudio(audioData: ByteArray) = withContext(Dispatchers.IO) {
 
-        if (socket != null && !socket.isClosed && serverAddress != null) {
+        val serverAddress: InetAddress? = InetAddress.getByName(sessionManager.getIpAddress())
+        val sessionCode = sessionManager.getSessionCode() ?: return@withContext
+
+        val buffer = ByteBuffer.allocate(4 + audioData.size)
+        buffer.putInt(sessionCode)
+        buffer.put(audioData)
+
+        val packetData = buffer.array()     // On insert le code de la session et l'audio
+
+        if (!socket.isClosed && serverAddress != null) {
             try {
                 val packet = DatagramPacket(
-                    audioData,
-                    audioData.size,
+                    packetData,
+                    packetData.size,
                     serverAddress,
                     serverPort
                 )
