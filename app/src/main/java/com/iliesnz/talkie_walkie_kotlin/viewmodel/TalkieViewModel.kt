@@ -18,6 +18,15 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
     private val uiState = MutableStateFlow<TalkieUiState>(TalkieUiState.base)
     val uiStateReadOnly: StateFlow<TalkieUiState> = uiState.asStateFlow()
 
+    fun listeningUDP() {
+        viewModelScope.launch {
+            audioService.listenUDP()    // Receptione le sons en UDP
+        }
+        viewModelScope.launch {
+            audioService.listenAudio()  // Lire le sons sur la machine sans bloquer le reste
+        }
+    }
+
     fun disconnectToTCP(){
         viewModelScope.launch {
             sessionService.disconnectToTCP()
@@ -49,7 +58,7 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
         audioService.stopCommunication()
     }
 
-    fun listening(){
+    fun listeningTCP(){
         viewModelScope.launch {
             packetHandler.packetInReadOnly.collect {
                 packet -> packetManager(packet)

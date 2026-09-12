@@ -4,5 +4,6 @@ interface IAudioRepository {
 
     suspend fun sendAudio(audioData: ByteArray)
 
+    suspend fun listenUDP()
 
 }

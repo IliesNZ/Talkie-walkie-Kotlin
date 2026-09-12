@@ -6,5 +6,8 @@ interface IAudioService {
 
     fun stopCommunication()
 
+    suspend fun listenUDP()
+
+    suspend fun listenAudio()
 
 }

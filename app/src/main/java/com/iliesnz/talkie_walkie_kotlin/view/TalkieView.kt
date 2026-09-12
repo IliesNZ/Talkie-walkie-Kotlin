@@ -39,7 +39,8 @@ class TalkieView : AppCompatActivity() {
         val app = application as TalkieWalkieApplication
         val talkieViewModel = app.container.talkieViewModel
 
-        talkieViewModel.listening()
+        talkieViewModel.listeningTCP()
+        talkieViewModel.listeningUDP()
 
         back = findViewById<Button>(R.id.button_back)
         talk = findViewById<Button>(R.id.button_talk)
