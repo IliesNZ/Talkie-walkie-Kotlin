@@ -6,7 +6,7 @@ plugins {
 
 application {
     // La classe principale qui contient ta fonction main()
-    mainClass.set("org.example.MainServerKt")
+    mainClass.set("com.iliesnz.talkie-walkie-kotlin.MainServerKt")
 }
 
 dependencies {
