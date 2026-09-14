@@ -59,4 +59,28 @@ class UdpClient(private val sessionManager: SessionManager, private val audioHan
         }
     }
 
+    override suspend fun identification() = withContext(Dispatchers.IO) {
+        val serverAddress = InetAddress.getByName(sessionManager.getIpAddress())
+        val sessionCode = sessionManager.getSessionCode() ?: return@withContext
+
+        val buffer = ByteBuffer.allocate(4)
+        buffer.putInt(sessionCode)
+        val packetData = buffer.array()
+
+        if (!socket.isClosed && serverAddress != null) {
+            try {
+                val packet = DatagramPacket(
+                    packetData,
+                    packetData.size,
+                    serverAddress,
+                    serverPort
+                )
+                socket.send(packet)
+                println("UDP CLIENT >> Paquet d'enregistrement envoyé !")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }

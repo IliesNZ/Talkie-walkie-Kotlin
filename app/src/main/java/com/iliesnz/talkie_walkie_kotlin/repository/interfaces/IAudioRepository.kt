@@ -6,4 +6,6 @@ interface IAudioRepository {
 
     suspend fun listenUDP()
 
+    suspend fun identification()
+
 }

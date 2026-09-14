@@ -98,6 +98,11 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
                 val data = (packet.getData() as Number).toInt()
 
                 sessionService.changeSessionCode(data)
+
+                viewModelScope.launch {
+                    audioService.identification()
+                }
+
                 println("Code de la session : " + data)
             }
 

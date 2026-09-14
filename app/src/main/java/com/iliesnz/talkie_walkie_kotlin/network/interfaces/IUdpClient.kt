@@ -6,4 +6,6 @@ interface IUdpClient {
 
     suspend fun listen()
 
+    suspend fun identification()
+
 }

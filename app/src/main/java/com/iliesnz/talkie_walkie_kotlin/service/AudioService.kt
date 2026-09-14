@@ -97,4 +97,8 @@ class AudioService(private val repository: IAudioRepository): IAudioService {
             }
         }
     }
+
+    override suspend fun identification() {
+        repository.identification()
+    }
 }

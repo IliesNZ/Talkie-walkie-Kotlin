@@ -26,4 +26,8 @@ class AudioRepository(private val applicationScope: CoroutineScope, private val 
         }
     }
 
+    override suspend fun identification() {
+        udpClient.identification()
+    }
+
 }

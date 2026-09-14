@@ -10,4 +10,6 @@ interface IAudioService {
 
     suspend fun listenAudio(audioData: ByteArray)
 
+    suspend fun identification()
+
 }
