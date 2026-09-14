@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.media3.common.ktx)
     implementation(libs.material)
     implementation("com.google.code.gson:gson:2.14.0")
     testImplementation(libs.junit)

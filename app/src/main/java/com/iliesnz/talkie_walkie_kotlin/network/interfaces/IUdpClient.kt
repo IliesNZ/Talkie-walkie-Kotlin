@@ -2,8 +2,10 @@ package com.iliesnz.talkie_walkie_kotlin.network.interfaces
 
 interface IUdpClient {
 
-    suspend fun startCommunication(serverAddress: String?)
+    suspend fun sendAudio(audioData: ByteArray)
 
-    fun stopCommunication()
+    suspend fun listen()
+
+    suspend fun identification()
 
 }

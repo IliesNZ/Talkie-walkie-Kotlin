@@ -11,8 +11,4 @@ interface ISessionRepository {
 
     suspend fun changeChannel(session: Session)
 
-    suspend fun startCommunication(ipAddress: String?)
-
-    fun stopCommunication()
-
 }

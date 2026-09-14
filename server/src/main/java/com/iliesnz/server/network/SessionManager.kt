@@ -20,6 +20,8 @@ object SessionManager {
 
     fun getClient(code: Int): ClientInfo? = clients[code]
 
+    fun getClients(): Map<Int, ClientInfo> = clients
+
     fun removeClient(code: Int) {
         clients.remove(code)
     }

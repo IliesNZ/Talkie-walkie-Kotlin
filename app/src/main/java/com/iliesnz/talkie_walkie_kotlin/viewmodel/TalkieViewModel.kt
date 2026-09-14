@@ -3,19 +3,53 @@ package com.iliesnz.talkie_walkie_kotlin.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iliesnz.shared.model.Packet
+import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.AudioHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class TalkieViewModel(private val sessionService: ISessionService, private val packetHandler: PacketHandler) : ViewModel() {
+class TalkieViewModel(private val sessionService: ISessionService, private val audioService: IAudioService, private val packetHandler: PacketHandler, private val audioHandler: AudioHandler) : ViewModel() {
 
     private val uiState = MutableStateFlow<TalkieUiState>(TalkieUiState.base)
     val uiStateReadOnly: StateFlow<TalkieUiState> = uiState.asStateFlow()
+
+    private var resetDelayJob: Job? = null
+
+    fun listeningUDP() {
+        viewModelScope.launch {
+            audioService.listenUDP()    // Receptionne le sons en UDP
+        }
+        viewModelScope.launch {
+            listeningAudio()
+        }
+    }
+
+    private suspend fun listeningAudio(){
+        audioHandler.audioInReadOnly.collect { audioData ->
+            uiState.value = TalkieUiState.incomingSound
+            audioService.listenAudio(audioData)
+            infoDelay()
+        }
+    }
+
+    private suspend fun infoDelay(){
+
+        resetDelayJob?.cancel()
+
+        resetDelayJob = viewModelScope.launch{
+            delay(500)
+            uiState.value = TalkieUiState.base
+        }
+    }
 
     fun disconnectToTCP(){
         viewModelScope.launch {
@@ -36,7 +70,8 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     fun startCommunication(){
         viewModelScope.launch {
             try {
-                sessionService.startCommunication()
+                uiState.value = TalkieUiState.comingOutSound
+                audioService.startCommunication()
             }
             catch (e: Exception){
                 e.printStackTrace()
@@ -45,10 +80,11 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
     }
 
     fun stopCommunication(){
-        sessionService.stopCommunication()
+        uiState.value = TalkieUiState.base
+        audioService.stopCommunication()
     }
 
-    fun listening(){
+    fun listeningTCP(){
         viewModelScope.launch {
             packetHandler.packetInReadOnly.collect {
                 packet -> packetManager(packet)
@@ -62,6 +98,11 @@ class TalkieViewModel(private val sessionService: ISessionService, private val p
                 val data = (packet.getData() as Number).toInt()
 
                 sessionService.changeSessionCode(data)
+
+                viewModelScope.launch {
+                    audioService.identification()
+                }
+
                 println("Code de la session : " + data)
             }
 

@@ -43,14 +43,4 @@ class SessionService (private val repository: ISessionRepository, private val se
         sessionManager.setSessionCode(code)
     }
 
-    override suspend fun startCommunication() {
-        val ipAddress = sessionManager.getIpAddress()
-
-        repository.startCommunication(ipAddress)
-    }
-
-    override fun stopCommunication() {
-        repository.stopCommunication()
-    }
-
 }

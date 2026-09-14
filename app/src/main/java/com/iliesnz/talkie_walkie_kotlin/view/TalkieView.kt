@@ -1,13 +1,12 @@
 package com.iliesnz.talkie_walkie_kotlin.view
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.NumberPicker
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,12 +17,14 @@ import com.iliesnz.talkie_walkie_kotlin.TalkieWalkieApplication
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class TalkieView : AppCompatActivity() {
 
     lateinit var back: Button
     lateinit var talk: Button
     lateinit var numberPicker: NumberPicker
+    lateinit var info: ImageView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +40,15 @@ class TalkieView : AppCompatActivity() {
         val app = application as TalkieWalkieApplication
         val talkieViewModel = app.container.talkieViewModel
 
-        talkieViewModel.listening()
+        talkieViewModel.listeningTCP()
+        talkieViewModel.listeningUDP()
 
         back = findViewById<Button>(R.id.button_back)
         talk = findViewById<Button>(R.id.button_talk)
         numberPicker = findViewById<NumberPicker>(R.id.number_picker)
         numberPicker.minValue = 1
         numberPicker.maxValue = 15
+        info = findViewById<ImageView>(R.id.info_circle)
 
 
         back.setOnClickListener {
@@ -56,13 +59,15 @@ class TalkieView : AppCompatActivity() {
         talk.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    Toast.makeText(this, "Parler...", Toast.LENGTH_LONG).show()
+                    talk.setBackgroundColor(android.graphics.Color.DKGRAY)
+                    talk.setText("")
                     talkieViewModel.startCommunication()
                     true
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    Toast.makeText(this, "Stop...", Toast.LENGTH_LONG).show()
+                    talk.setBackgroundColor(android.graphics.Color.BLACK)
+                    talk.setText("Push-To-Talk")
                     talkieViewModel.stopCommunication()
                     true
                 }
@@ -93,14 +98,15 @@ class TalkieView : AppCompatActivity() {
                 back.visibility = View.VISIBLE
                 talk.visibility = View.VISIBLE
                 numberPicker.visibility = View.VISIBLE
+                info.setImageResource(android.R.drawable.presence_invisible)
             }
 
             is TalkieUiState.comingOutSound -> {
-
+                info.setImageResource(android.R.drawable.presence_online)
             }
 
             is TalkieUiState.incomingSound -> {
-
+                info.setImageResource(android.R.drawable.ic_notification_overlay)
             }
 
             is TalkieUiState.Error -> {
@@ -113,7 +119,7 @@ class TalkieView : AppCompatActivity() {
     private fun blockPicker() {
         lifecycleScope.launch {
             numberPicker.isEnabled = false
-            delay(3000)
+            delay(3000.milliseconds)
             numberPicker.isEnabled = true
         }
     }
