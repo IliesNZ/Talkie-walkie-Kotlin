@@ -14,6 +14,8 @@ import java.net.Socket
 
 class ClientHandler(private val client: Socket) : Runnable {
 
+    var sessionCode: Int = 0
+
     val gson = Gson()
 
     val dataIn = BufferedReader(InputStreamReader(client.getInputStream()))
@@ -29,35 +31,47 @@ class ClientHandler(private val client: Socket) : Runnable {
 
         println("Connexion établis !")
 
-        while (true){
+        try {
+            while (true) {
 
-            val json = dataIn.readLine() ?: break
-            val packetIn: Packet = toPacket(json)
+                val json = dataIn.readLine() ?: break
+                val packetIn: Packet = toPacket(json)
 
-            val packetOut = when (packetIn.getType()){
+                val packetOut = when (packetIn.getType()) {
 
-                Request.CREATE_SESSION.name -> {
+                    Request.CREATE_SESSION.name -> {
 
-                    val code = sessionService.createCode()
-                    SessionManager.addClient(code, 1)
+                        val code = sessionService.createCode()
+                        sessionCode = code
+                        SessionManager.addClient(code, 1)
 
-                    Packet(Response.RETURN_SESSION.name, code)
-                }
-
-                Request.CHANGE_CHANNEL.name -> {
-                    val session = gson.fromJson(gson.toJsonTree(packetIn.getData()), Session::class.java)
-
-                    if (session != null) {
-                        println("Nouveau channel = " + session.getChannel() + " du client " + session.getId())
-                        SessionManager.changeClientChannel(session)
+                        Packet(Response.RETURN_SESSION.name, code)
                     }
 
-                    Packet(Response.OK.name, "")
-                }
+                    Request.CHANGE_CHANNEL.name -> {
+                        val session =
+                            gson.fromJson(gson.toJsonTree(packetIn.getData()), Session::class.java)
 
-                else -> Packet(Response.INVALID_REQUEST.name, "Requête introuvable.")
+                        if (session != null) {
+                            println("Nouveau channel = " + session.getChannel() + " du client " + session.getId())
+                            SessionManager.changeClientChannel(session)
+                        }
+
+                        Packet(Response.OK.name, "")
+                    }
+
+                    else -> Packet(Response.INVALID_REQUEST.name, "Requête introuvable.")
+                }
+                sendMessage(packetOut)
             }
-            sendMessage(packetOut)
+        } catch (e: Exception){
+            println("Erreur de communication: ${e.message}")
+        } finally {
+            SessionManager.removeClient(sessionCode)
+            dataIn.close()
+            dataOut.close()
+            client.close()
+            println("Déconnexion du client.")
         }
     }
 

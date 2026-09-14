@@ -57,13 +57,15 @@ class TalkieView : AppCompatActivity() {
         talk.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    Toast.makeText(this, "Parler...", Toast.LENGTH_LONG).show()
+                    talk.setBackgroundColor(android.graphics.Color.DKGRAY)
+                    talk.setText("")
                     talkieViewModel.startCommunication()
                     true
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    Toast.makeText(this, "Stop...", Toast.LENGTH_LONG).show()
+                    talk.setBackgroundColor(android.graphics.Color.BLACK)
+                    talk.setText("Push-To-Talk")
                     talkieViewModel.stopCommunication()
                     true
                 }

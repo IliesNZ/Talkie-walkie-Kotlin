@@ -2,11 +2,12 @@
 plugins {
     kotlin("jvm")
     application
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 application {
     // La classe principale qui contient ta fonction main()
-    mainClass.set("com.iliesnz.talkie-walkie-kotlin.MainServerKt")
+    mainClass.set("com.iliesnz.server.MainServerKt")
 }
 
 dependencies {
@@ -14,7 +15,7 @@ dependencies {
     implementation(project(":shared"))
 
     // Dépendances nécessaires au serveur
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
     implementation("com.google.code.gson:gson:2.14.0")
     testImplementation(libs.junit.junit)
 }
