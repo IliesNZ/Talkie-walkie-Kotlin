@@ -13,7 +13,28 @@ import com.iliesnz.talkie_walkie_kotlin.service.sharedFlow.AudioHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AudioService(private val repository: IAudioRepository, private val audioHandler: AudioHandler): IAudioService {
+class AudioService(private val repository: IAudioRepository): IAudioService {
+
+    val sampleRate = 16000
+    val channelMask = AudioFormat.CHANNEL_OUT_MONO // CHANNEL_OUT pour les haut-parleurs
+    val encoding = AudioFormat.ENCODING_PCM_16BIT
+
+    val minBuffSize = AudioTrack.getMinBufferSize(sampleRate, channelMask, encoding)
+
+    val audioTrack = AudioTrack.Builder()
+        .setAudioAttributes(
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build())
+        .setAudioFormat(AudioFormat.Builder()
+            .setEncoding(encoding)
+            .setSampleRate(sampleRate)
+            .setChannelMask(channelMask)
+            .build())
+        .setBufferSizeInBytes(minBuffSize)
+        .setTransferMode(AudioTrack.MODE_STREAM)
+        .build()
 
     @Volatile var isRecording = false
 
@@ -66,43 +87,17 @@ class AudioService(private val repository: IAudioRepository, private val audioHa
     }
 
     override suspend fun listenUDP() {
+        audioTrack.play()
         repository.listenUDP()
     }
 
-    override suspend fun listenAudio() = withContext(Dispatchers.IO) {
-        val sampleRate = 16000
-        val channelMask = AudioFormat.CHANNEL_OUT_MONO // CHANNEL_OUT pour les haut-parleurs
-        val encoding = AudioFormat.ENCODING_PCM_16BIT
-
-        val minBuffSize = AudioTrack.getMinBufferSize(sampleRate, channelMask, encoding)
-
-        val audioTrack = AudioTrack.Builder()
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                .build())
-            .setAudioFormat(AudioFormat.Builder()
-                .setEncoding(encoding)
-                .setSampleRate(sampleRate)
-                .setChannelMask(channelMask)
-                .build())
-            .setBufferSizeInBytes(minBuffSize)
-            .setTransferMode(AudioTrack.MODE_STREAM)
-            .build()
-
-        audioTrack.play()
-
-        try {
-            audioHandler.audioInReadOnly.collect { audioData ->
-                // On écrit les données dans le haut-parleur
+    override suspend fun listenAudio(audioData: ByteArray) {
+        withContext(Dispatchers.IO) {
+            try {
                 audioTrack.write(audioData, 0, audioData.size)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            audioTrack.stop()
-            audioTrack.release()
         }
     }
 }

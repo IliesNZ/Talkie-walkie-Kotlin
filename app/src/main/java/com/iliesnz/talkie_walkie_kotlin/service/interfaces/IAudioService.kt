@@ -8,6 +8,6 @@ interface IAudioService {
 
     suspend fun listenUDP()
 
-    suspend fun listenAudio()
+    suspend fun listenAudio(audioData: ByteArray)
 
 }

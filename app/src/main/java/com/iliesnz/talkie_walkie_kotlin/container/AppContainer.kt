@@ -32,9 +32,9 @@ class AppContainer(applicationScope: CoroutineScope) {       //Utilisation pour 
     private val audioRepository: IAudioRepository = AudioRepository(applicationScope, udpClient)
 
     private val sessionService: ISessionService = SessionService(sessionRepository, sessionManager)
-    private val audioService: IAudioService = AudioService(audioRepository, audioHandler)
+    private val audioService: IAudioService = AudioService(audioRepository)
 
     val homeViewModel = HomeViewmodel(sessionService)
-    val talkieViewModel = TalkieViewModel(sessionService, audioService, packetHandler)
+    val talkieViewModel = TalkieViewModel(sessionService, audioService, packetHandler, audioHandler)
 
 }

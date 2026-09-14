@@ -50,7 +50,7 @@ class UdpClient(private val sessionManager: SessionManager, private val audioHan
         try {
             while (!socket.isClosed) {
                 socket.receive(packet)
-                println("UDP CLIENT >> Paquet reçu de ${packet.length} octets !")
+                println("UDP CLIENT >> Paquet reçu !")
                 val data = packet.data
                 audioHandler.emit(data.copyOf(packet.length))
             }
