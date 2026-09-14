@@ -1,4 +1,4 @@
-package com.iliesnz.talkie_walkie_kotlin.service.sharedFlow
+package com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

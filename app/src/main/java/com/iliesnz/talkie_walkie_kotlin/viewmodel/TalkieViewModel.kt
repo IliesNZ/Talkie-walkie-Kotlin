@@ -5,9 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.iliesnz.shared.model.Packet
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.ISessionService
-import com.iliesnz.talkie_walkie_kotlin.service.sharedFlow.AudioHandler
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.AudioHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.stateFlow.TalkieUiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,9 +22,11 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
     private val uiState = MutableStateFlow<TalkieUiState>(TalkieUiState.base)
     val uiStateReadOnly: StateFlow<TalkieUiState> = uiState.asStateFlow()
 
+    private var resetDelayJob: Job? = null
+
     fun listeningUDP() {
         viewModelScope.launch {
-            audioService.listenUDP()    // Receptione le sons en UDP
+            audioService.listenUDP()    // Receptionne le sons en UDP
         }
         viewModelScope.launch {
             listeningAudio()
@@ -32,6 +37,17 @@ class TalkieViewModel(private val sessionService: ISessionService, private val a
         audioHandler.audioInReadOnly.collect { audioData ->
             uiState.value = TalkieUiState.incomingSound
             audioService.listenAudio(audioData)
+            infoDelay()
+        }
+    }
+
+    private suspend fun infoDelay(){
+
+        resetDelayJob?.cancel()
+
+        resetDelayJob = viewModelScope.launch{
+            delay(500)
+            uiState.value = TalkieUiState.base
         }
     }
 

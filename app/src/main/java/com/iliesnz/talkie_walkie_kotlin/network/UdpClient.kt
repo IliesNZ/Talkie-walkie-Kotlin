@@ -1,7 +1,7 @@
 package com.iliesnz.talkie_walkie_kotlin.network
 
 import com.iliesnz.talkie_walkie_kotlin.network.interfaces.IUdpClient
-import com.iliesnz.talkie_walkie_kotlin.service.sharedFlow.AudioHandler
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.AudioHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.DatagramPacket

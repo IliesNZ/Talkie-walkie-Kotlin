@@ -14,7 +14,7 @@ import com.iliesnz.talkie_walkie_kotlin.repository.SessionRepository
 import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.IAudioRepository
 import com.iliesnz.talkie_walkie_kotlin.service.AudioService
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
-import com.iliesnz.talkie_walkie_kotlin.service.sharedFlow.AudioHandler
+import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.AudioHandler
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.TalkieViewModel
 import com.iliesnz.talkie_walkie_kotlin.viewmodel.sharedFlow.PacketHandler
 import kotlinx.coroutines.CoroutineScope

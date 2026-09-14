@@ -9,7 +9,6 @@ import android.media.MediaRecorder
 import androidx.annotation.RequiresPermission
 import com.iliesnz.talkie_walkie_kotlin.repository.interfaces.IAudioRepository
 import com.iliesnz.talkie_walkie_kotlin.service.interfaces.IAudioService
-import com.iliesnz.talkie_walkie_kotlin.service.sharedFlow.AudioHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -43,9 +42,7 @@ class AudioService(private val repository: IAudioRepository): IAudioService {
 
         if (isRecording) return@withContext  // Si l'utilisateur spam le bouton => Cela empêche de créé de nouveauc flux audio
 
-        val sampleRate = 16000
         val channelMask = AudioFormat.CHANNEL_IN_MONO
-        val encoding = AudioFormat.ENCODING_PCM_16BIT
 
         val minBuffSizeBytes = AudioRecord.getMinBufferSize(sampleRate, channelMask, encoding)
 
